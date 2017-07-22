@@ -1,4 +1,4 @@
-
+ 
 import talkmongo.representation.annotations.Table;
 import talkmongo.representation.annotations.Column;
 import talkmongo.representation.Entity;
