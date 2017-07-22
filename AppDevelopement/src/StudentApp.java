@@ -1,5 +1,3 @@
-package test;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -9,10 +7,9 @@ import talkmongo.representation.MongoTableConnector;
 import talkmongo.representation.dbinterface.DBConnection;
 import talkmongo.representation.dbinterface.TableConnector;
 import talkmongo.representation.logging.LoggerSettings;
-import test.Student;
 
 
-public class TestDriver {
+public class StudentApp {
 
 	public static void main(String args[]) {
 

@@ -2,7 +2,10 @@ package talkmongo.representation;
 
 import com.mongodb.MongoClient;
 import java.lang.String;
+import java.util.logging.Level;
+
 import talkmongo.representation.dbinterface.DBConnection;
+import talkmongo.representation.logging.LoggerSettings;
 
 public class MongoDBConnection implements DBConnection {
 	MongoClient mongoClient;
@@ -17,7 +20,7 @@ public class MongoDBConnection implements DBConnection {
 		long start = System.currentTimeMillis();
 		mongoClient = new MongoClient(this.hostName, this.port);
 		long end = System.currentTimeMillis();
-		System.out.println("New Mongo - Time : " + (end - start) + " MS");
+		LoggerSettings.logger.log(Level.FINE,"New Mongo DB connection: " + (end - start) + " MS");
 	}
 
 	public MongoClient getMongoClient() {

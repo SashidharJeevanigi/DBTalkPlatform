@@ -9,9 +9,11 @@ import talkmongo.representation.TableDefinition;
 import talkmongo.representation.DatabaseTableDefinitions;
 import talkmongo.representation.MongoDBConnection;
 import talkmongo.representation.dbinterface.TableConnector;
+import talkmongo.representation.logging.LoggerSettings;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.logging.Level;
 
 
 public class MongoTableConnector {//implements TableConnector{
@@ -27,6 +29,8 @@ public class MongoTableConnector {//implements TableConnector{
 	public MongoTableConnector(MongoDBConnection dbConnection,Class entityObjectClass){
 		this.entityObjectClass = entityObjectClass;
 		this.dbConnection = dbConnection;
+		LoggerSettings.setIndentLevel(2);
+		LoggerSettings.logger.log(Level.FINE,"Reading table based on entityObjectClass: " +entityObjectClass.toString() +"\n");
 		this.tableDefinition = DatabaseTableDefinitions.getInstance().getTableDefinition(entityObjectClass);	
 		this.db = dbConnection.getMongoClient().getDB(this.tableDefinition.getTableName());
 		this.dbCollection = db.getCollection(this.tableDefinition.getTableName());	
@@ -95,10 +99,10 @@ public class MongoTableConnector {//implements TableConnector{
 	
 	public static boolean setFieldValue(Object targetObject, Field objectField, Object fieldValue) {
 		try {
-			System.out.println("Name : "+ objectField.getName()+ "\n" + "Feild ==== "+objectField+ "\n"+ fieldValue);
+			//System.out.println("Name : "+ objectField.getName()+ "\n" + "Feild ==== "+objectField+ "\n"+ fieldValue);
 			
 			if (objectField.getType() == int.class){
-				System.out.println("**** int Contition True");
+				//System.out.println("**** int Contition True");
 				String stringValue = (String)fieldValue;
 				int intValue = Integer.parseInt(stringValue);
 				objectField.set(targetObject,intValue );
@@ -107,7 +111,7 @@ public class MongoTableConnector {//implements TableConnector{
 				double doubleValue = Double.parseDouble(stringValue);
 				objectField.set(targetObject, doubleValue);
 			}else if (objectField.getType() == String.class){				
-				System.out.println("**** String Contition True");
+				//System.out.println("**** String Contition True");
 				objectField.set(targetObject, (String)fieldValue);
 			}
 		}catch (IllegalAccessException e) {
