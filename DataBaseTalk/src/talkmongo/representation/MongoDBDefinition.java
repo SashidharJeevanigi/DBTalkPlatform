@@ -1,29 +1,55 @@
 package talkmongo.representation;
 
 import com.mongodb.MongoClient;
+import talkmongo.representation.dbinterface.DBDefinition;
 import java.lang.String;
 import java.util.logging.Level;
+import talkmongo.representation.DatabaseTableDefinitions;
 
 import talkmongo.representation.dbinterface.DBConnection;
 import talkmongo.representation.logging.LoggerSettings;
 
-public class MongoDBConnection implements DBConnection {
+public class MongoDBDefinition implements DBDefinition {
 	MongoClient mongoClient;
 	String hostName;
 	int port;
-	
+	String connectionName;
+	DatabaseTableDefinitions dbTableDefinitions;
 
-	public MongoDBConnection(String hostName, int port){ //TODO: Add authentication
-		
+
+	public DatabaseTableDefinitions getDbTableDefinitions() {
+		return dbTableDefinitions;
+	}
+
+	public void setDbTableDefinitions(DatabaseTableDefinitions dbTableDefinitions) {
+		this.dbTableDefinitions = dbTableDefinitions;
+	}
+
+	public String getConnectionName() {
+		return connectionName;
+	}
+
+	public void setConnectionName(String connectionName) {
+		this.connectionName = connectionName;
+	}
+
+	public MongoDBDefinition(String connectionName, String hostName, int port){ //TODO: Add authentication
+		this.connectionName = connectionName;
 		this.hostName = hostName;
 		this.port = port;
+		this.dbTableDefinitions = new  DatabaseTableDefinitions();
 
+	}
+
+	public MongoDBConnection getNewMongoConnection() {
 		long start = System.currentTimeMillis();
-		mongoClient = new MongoClient(this.hostName, this.port);
+		MongoDBConnection mongoDBConnection = new MongoDBConnection(this.hostName, this.port);
 		long end = System.currentTimeMillis();
 		LoggerSettings.logger.log(Level.FINE,"New Mongo DB connection: " + (end - start) + " MS");
+
+		return mongoDBConnection;
 	}
-	
+
 	public MongoClient getMongoClient() {
 		return mongoClient;
 	}
@@ -85,9 +111,10 @@ public class MongoDBConnection implements DBConnection {
 		result = prime * result + port;
 		return result;
 	}
-	
+
 	@Override
 	public String toString() {
-		return " Host Name : " + hostName + " Port No : " + port;
+		return "Connection Name: " + connectionName + " Host Name : " + hostName + " Port No : " + port;
 	}
 }
+

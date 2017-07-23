@@ -5,10 +5,14 @@ import java.util.List;
 import java.util.logging.Level;
 
 import talkmongo.representation.MongoDBConnection;
+import talkmongo.representation.MongoDBDefinition;
 import talkmongo.representation.MongoTableConnector;
+import talkmongo.representation.TableConnectionHelper;
 import talkmongo.representation.dbinterface.DBConnection;
+import talkmongo.representation.dbinterface.DBDefinition;
 import talkmongo.representation.dbinterface.TableConnector;
 import talkmongo.representation.logging.LoggerSettings;
+import talkmongo.representation.DBConnector;
 import test.Student;
 
 
@@ -28,7 +32,7 @@ public class TestDriver {
 		 * Create a Mongo DB connection client
 		 * 
 		 ******************/
-		MongoDBConnection dbConnection = new MongoDBConnection("localhost",27017); 
+		DBDefinition dbDefinition =  DBConnector.getInstance().getDBDefinition("MongoConection1");
 		//TODO LIST:
 		//config.xml, DB Type - DBConnector will per user. Implement a "interface".
 		//Multi-tenant system
@@ -40,8 +44,9 @@ public class TestDriver {
 		 * Create a Table connector based on a annotated Java class : Student
 		 * 
 		 ******************/
-		LoggerSettings.logger.log(Level.FINE,"Initializing Table connector: \n");
-		MongoTableConnector tableConnector  = new MongoTableConnector(dbConnection,Student.class);	
+		LoggerSettings.logger.log(Level.FINE,"*** Initializing Table connector: \n");
+		
+		TableConnector tableConnector  = TableConnectionHelper.getInstance().getTableConnector(dbDefinition,Student.class);	
 		
 		
 		/*******************

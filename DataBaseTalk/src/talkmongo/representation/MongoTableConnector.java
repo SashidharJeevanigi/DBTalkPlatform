@@ -5,9 +5,11 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import java.lang.Integer;
+import talkmongo.representation.MongoDBDefinition;
 import talkmongo.representation.TableDefinition;
 import talkmongo.representation.DatabaseTableDefinitions;
 import talkmongo.representation.MongoDBConnection;
+import talkmongo.representation.dbinterface.DBDefinition;
 import talkmongo.representation.dbinterface.TableConnector;
 import talkmongo.representation.logging.LoggerSettings;
 
@@ -16,23 +18,34 @@ import java.lang.reflect.Field;
 import java.util.logging.Level;
 
 
-public class MongoTableConnector {//implements TableConnector{
+public class MongoTableConnector implements TableConnector{
 	
 	private Class entityObjectClass;
+	private MongoDBDefinition dbDefinition;
 	private TableDefinition tableDefinition;
+	
+	
 	private DB db;
 	private DBCollection dbCollection;
 	private DBCursor dbCursor;
-	private MongoDBConnection dbConnection;
+	
+	private MongoDBConnection mongoDBConnection;
 	
 	
-	public MongoTableConnector(MongoDBConnection dbConnection,Class entityObjectClass){
+	public MongoTableConnector(DBDefinition dbDefinition,Class entityObjectClass){
+		this.dbDefinition = (MongoDBDefinition)(dbDefinition);
 		this.entityObjectClass = entityObjectClass;
-		this.dbConnection = dbConnection;
 		LoggerSettings.setIndentLevel(2);
 		LoggerSettings.logger.log(Level.FINE,"Reading table based on entityObjectClass: " +entityObjectClass.toString() +"\n");
-		this.tableDefinition = DatabaseTableDefinitions.getInstance().getTableDefinition(entityObjectClass);	
-		this.db = dbConnection.getMongoClient().getDB(this.tableDefinition.getTableName());
+	
+		//Mongo Specific
+				
+		this.tableDefinition = this.dbDefinition.getDbTableDefinitions().getTableDefinition(entityObjectClass);	
+		
+		this.mongoDBConnection = this.dbDefinition.getNewMongoConnection();
+		
+		
+		this.db = mongoDBConnection.getMongoClient().getDB(this.tableDefinition.getTableName());
 		this.dbCollection = db.getCollection(this.tableDefinition.getTableName());	
 		this.dbCursor = this.dbCollection.find();
 	}

@@ -65,7 +65,7 @@ public class TestDriverFullFlow {
 			 * 
 			 * 			 
 			 **************/
-			TableDefinition tableDef = DatabaseTableDefinitions.getInstance().getTableDefinition(Student.class);
+			TableDefinition tableDef = null;// DatabaseTableDefinitions.getInstance().getTableDefinition(Student.class);
 			System.out.println("Table Def: \n" + tableDef);
 			
 			start = System.currentTimeMillis();

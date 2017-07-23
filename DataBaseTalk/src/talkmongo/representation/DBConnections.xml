@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<db-connections>
+
+	<db-connection db-type="MONGODB" db-name="MongoConection1"> 
+		<param host="localhost"></param>
+		<param post="20717"></param>
+	</db-connection>
+	
+	<db-connection db-type="MONGODB" db-name="MongoConection2"> 
+		<param host="localhost2"></param>
+		<param post="20717"></param>
+	</db-connection>
+	
+</db-connections>    

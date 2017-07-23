@@ -11,7 +11,7 @@ import talkmongo.representation.Entity;
 
 public class DatabaseTableDefinitions {
 	private Map<Class<? extends Entity>, TableDefinition> entityToTableDefinitionMap;
-	private static DatabaseTableDefinitions instance = null;
+	//private static DatabaseTableDefinitions instance = null;
 	
 	protected DatabaseTableDefinitions()
 	{
@@ -19,14 +19,14 @@ public class DatabaseTableDefinitions {
 		
 	}
 
-	public static DatabaseTableDefinitions getInstance()
+	/*public static DatabaseTableDefinitions getInstance()
 	{
 		if (instance == null)
 		{
 			instance = new DatabaseTableDefinitions();
 		}
 		return instance;
-	}
+	}*/
 
 	public <T extends Entity> TableDefinition getTableDefinition(Class<T> userDefinedEntityClass) 
 	{

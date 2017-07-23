@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<db-connections>
+
+	<db-connection db-type="MONGODB" db-name="MongoConection1"> 
+		<host>localhost</host>
+		<port>27017</port>	
+	</db-connection>
+	
+	<db-connection db-type="MONGODB" db-name="MongoConection2"> 
+		<host>localhost2</host>
+		<port>27017</port>	
+	</db-connection>
+	
+</db-connections> 
