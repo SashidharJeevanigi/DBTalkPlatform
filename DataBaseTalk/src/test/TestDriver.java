@@ -4,15 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-import talkmongo.representation.MongoDBConnection;
-import talkmongo.representation.MongoDBDefinition;
-import talkmongo.representation.MongoTableConnector;
-import talkmongo.representation.TableConnectionHelper;
-import talkmongo.representation.dbinterface.DBConnection;
+import talkmongo.TableConnectionHelper;
 import talkmongo.representation.dbinterface.DBDefinition;
 import talkmongo.representation.dbinterface.TableConnector;
 import talkmongo.representation.logging.LoggerSettings;
-import talkmongo.representation.DBConnector;
+import talkmongo.DBConnector;
 import test.Student;
 
 

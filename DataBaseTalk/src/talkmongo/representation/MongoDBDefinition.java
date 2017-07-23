@@ -3,11 +3,7 @@ package talkmongo.representation;
 import com.mongodb.MongoClient;
 import talkmongo.representation.dbinterface.DBDefinition;
 import java.lang.String;
-import java.util.logging.Level;
 import talkmongo.representation.DatabaseTableDefinitions;
-
-import talkmongo.representation.dbinterface.DBConnection;
-import talkmongo.representation.logging.LoggerSettings;
 
 public class MongoDBDefinition implements DBDefinition {
 	MongoClient mongoClient;
@@ -41,12 +37,8 @@ public class MongoDBDefinition implements DBDefinition {
 
 	}
 
-	public MongoDBConnection getNewMongoConnection() {
-		long start = System.currentTimeMillis();
-		MongoDBConnection mongoDBConnection = new MongoDBConnection(this.hostName, this.port);
-		long end = System.currentTimeMillis();
-		LoggerSettings.logger.log(Level.FINE,"New Mongo DB connection: " + (end - start) + " MS");
-
+	public MongoDBConnection getNewMongoConnection() {		
+		MongoDBConnection mongoDBConnection = new MongoDBConnection(this.hostName, this.port);		
 		return mongoDBConnection;
 	}
 

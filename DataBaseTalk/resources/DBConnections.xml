@@ -2,13 +2,13 @@
 <db-connections>
 
 	<db-connection db-type="MONGODB" db-name="MongoConection1"> 
-		<param host="localhost"></param>
-		<param post="20717"></param>
+		<host>localhost</host>
+		<port>27017</port>	
 	</db-connection>
 	
 	<db-connection db-type="MONGODB" db-name="MongoConection2"> 
-		<param host="localhost2"></param>
-		<param post="20717"></param>
+		<host>localhost2</host>
+		<port>27017</port>	
 	</db-connection>
 	
-</db-connections>    
+</db-connections> 

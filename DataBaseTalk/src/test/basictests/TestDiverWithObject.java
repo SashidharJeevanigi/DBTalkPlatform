@@ -1,18 +1,11 @@
 package test.basictests;
 
 import com.mongodb.MongoClient;
-import com.mongodb.operation.FindOperation;
-import com.mongodb.MongoException;
-import com.mongodb.WriteConcern;
-
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.mongodb.BasicDBObject;
-import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
 import com.mongodb.DBCursor;
 
-import com.mongodb.ServerAddress;
 import java.util.ArrayList;
 import java.util.List;
 import test.Student;

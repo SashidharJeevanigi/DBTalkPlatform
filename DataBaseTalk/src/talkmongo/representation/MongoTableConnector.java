@@ -7,7 +7,6 @@ import com.mongodb.DBObject;
 import java.lang.Integer;
 import talkmongo.representation.MongoDBDefinition;
 import talkmongo.representation.TableDefinition;
-import talkmongo.representation.DatabaseTableDefinitions;
 import talkmongo.representation.MongoDBConnection;
 import talkmongo.representation.dbinterface.DBDefinition;
 import talkmongo.representation.dbinterface.TableConnector;
@@ -33,10 +32,12 @@ public class MongoTableConnector implements TableConnector{
 	
 	
 	public MongoTableConnector(DBDefinition dbDefinition,Class entityObjectClass){
+		LoggerSettings.logger.log(Level.FINE,"Creating  a Mongo Table Connector ***");
+		
 		this.dbDefinition = (MongoDBDefinition)(dbDefinition);
 		this.entityObjectClass = entityObjectClass;
 		LoggerSettings.setIndentLevel(2);
-		LoggerSettings.logger.log(Level.FINE,"Reading table based on entityObjectClass: " +entityObjectClass.toString() +"\n");
+		LoggerSettings.logger.log(Level.FINE,"\tReading table based on entityObjectClass: " +entityObjectClass.toString());
 	
 		//Mongo Specific
 				
@@ -91,13 +92,13 @@ public class MongoTableConnector implements TableConnector{
 		// LOOP OVER THE fields of the Object
 		for (String fieldName : tableDefinition.getFieldNameToFieldMap().keySet()){
 
-			// GET the mapped DB column name for this feild of the Object
+			// GET the mapped DB column name for this field of the Object
 			String dbColumnName = tableDefinition.getFieldNameToDBColumnNameMap().get(fieldName);
 
 			// GET value of that DB column for this record/row in DB
 			Object valueFromDbColumn = dbObject.get(dbColumnName);
 
-			// SET the value from DB to the Object feild
+			// SET the value from DB to the Object field
 			Field objectField = tableDefinition.getFieldNameToFieldMap().get(fieldName);
 			success = setFieldValue(entityObject, objectField, valueFromDbColumn);
 			if (!success){
@@ -112,10 +113,9 @@ public class MongoTableConnector implements TableConnector{
 	
 	public static boolean setFieldValue(Object targetObject, Field objectField, Object fieldValue) {
 		try {
-			//System.out.println("Name : "+ objectField.getName()+ "\n" + "Feild ==== "+objectField+ "\n"+ fieldValue);
 			
+			//TODO: Handle all types of variables
 			if (objectField.getType() == int.class){
-				//System.out.println("**** int Contition True");
 				String stringValue = (String)fieldValue;
 				int intValue = Integer.parseInt(stringValue);
 				objectField.set(targetObject,intValue );
@@ -124,7 +124,6 @@ public class MongoTableConnector implements TableConnector{
 				double doubleValue = Double.parseDouble(stringValue);
 				objectField.set(targetObject, doubleValue);
 			}else if (objectField.getType() == String.class){				
-				//System.out.println("**** String Contition True");
 				objectField.set(targetObject, (String)fieldValue);
 			}
 		}catch (IllegalAccessException e) {

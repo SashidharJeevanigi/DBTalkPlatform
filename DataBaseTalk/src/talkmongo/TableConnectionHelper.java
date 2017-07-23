@@ -1,31 +1,19 @@
-package talkmongo.representation;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.logging.Level;
-
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
+package talkmongo;
 
 import talkmongo.representation.dbinterface.TableConnector;
+import talkmongo.representation.MongoDBDefinition;
+import talkmongo.representation.MongoTableConnector;
 import talkmongo.representation.dbinterface.DBDefinition;
-import talkmongo.representation.logging.LoggerSettings;
 
 public class TableConnectionHelper {
 	
 	private static TableConnectionHelper instance = null;
 	
-	protected TableConnectionHelper()
-	{
-		
-		
+	protected TableConnectionHelper(){
+				
 	}
 	
-	public static TableConnectionHelper getInstance()
-	{
+	public static TableConnectionHelper getInstance(){
 		if (instance == null)
 		{
 			instance = new TableConnectionHelper();
@@ -36,9 +24,13 @@ public class TableConnectionHelper {
 	
 	public  TableConnector getTableConnector(DBDefinition dbDefinition,Class entityObjectClass) {
 		TableConnector tableConnector=null;
+		
+		//For Mongo DB 
 		if(MongoDBDefinition.class.isAssignableFrom(dbDefinition.getClass())) {
 			tableConnector = new MongoTableConnector(dbDefinition, entityObjectClass);
 		}
+		
+		//TODO - Handle other DBs
 		
 		return tableConnector;
 	}

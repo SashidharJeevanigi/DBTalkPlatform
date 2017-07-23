@@ -21,7 +21,7 @@ public class MongoDBConnection implements DBConnection {
 		long start = System.currentTimeMillis();
 		mongoClient = new MongoClient(this.hostName, this.port);
 		long end = System.currentTimeMillis();
-		LoggerSettings.logger.log(Level.FINE,"New Mongo DB connection: " + (end - start) + " MS");
+		LoggerSettings.logger.log(Level.FINE,"\tNew Mongo DB connection: " + (end - start) + " MS");
 	}
 	
 	public MongoClient getMongoClient() {

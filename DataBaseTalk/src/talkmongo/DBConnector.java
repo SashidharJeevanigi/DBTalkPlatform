@@ -1,11 +1,13 @@
-package talkmongo.representation;
+package talkmongo;
 
+import talkmongo.representation.MongoDBDefinition;
 import talkmongo.representation.dbinterface.DBDefinition;
-import talkmongo.representation.dbinterface.DBConnection;
-import talkmongo.representation.MongoDBConnection;
+import talkmongo.representation.logging.LoggerSettings;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -18,19 +20,15 @@ import org.w3c.dom.Element;
 public class DBConnector {
 	
 	private Map<String, DBDefinition> dbConnectionNameToDBDefinitionMap;
-	String dbConnectionsFileName = "DBConnections.xml"; 
+	String dbConnectionsFileName = "resources/DBConnections.xml"; 
 	private static DBConnector instance = null;
 	
-	protected DBConnector()
-	{
-		dbConnectionNameToDBDefinitionMap = new HashMap<String, DBDefinition>();
-		
+	protected DBConnector()	{
+		dbConnectionNameToDBDefinitionMap = new HashMap<String, DBDefinition>();		
 	}
 	
-	public static DBConnector getInstance()
-	{
-		if (instance == null)
-		{
+	public static DBConnector getInstance()	{
+		if (instance == null){
 			instance = new DBConnector();
 		}
 		return instance;
@@ -45,87 +43,62 @@ public class DBConnector {
 		this.dbConnectionNameToDBDefinitionMap = dbConnectionNameToDBConnectionMap;
 	}
 
-	DBConnector(String DatabaseName){
-		
-	}
 	
-	public DBDefinition getDBDefinition(String dbConnectionName) 
-	{
+	public DBDefinition getDBDefinition(String dbConnectionName){
 		DBDefinition dbDefinition = dbConnectionNameToDBDefinitionMap.get(dbConnectionName);
-		if (dbDefinition == null)
-		{
+		if (dbDefinition == null){
 			readAndStoreDBConnections(dbConnectionName);
 			dbDefinition = dbConnectionNameToDBDefinitionMap.get(dbConnectionName);
 		}
-		
+		LoggerSettings.logger.log(Level.FINE,"Got the DB Definition *** : "+dbDefinition);
 		return dbDefinition;
-	}
-	
-	public DBConnection getNewDBConnection(String dbConnectionName) 
-	{
 		
-		DBDefinition dbDefinition = getDBDefinition(dbConnectionName);
-		
-		DBConnection dbConnection = null;
-		if(MongoDBDefinition.class.isAssignableFrom(dbDefinition.getClass())) {
-			dbConnection = ((MongoDBDefinition)dbDefinition).getNewMongoConnection();	
-		}
-		
-		return dbConnection;
-	}
-	
-	
+	}		
 
 	public void readAndStoreDBConnections(String dbConnectionName){
 		try {	
-	         File inputFile = new File(dbConnectionsFileName);
-	         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-	         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-	         Document doc = dBuilder.parse(inputFile);
-	         doc.getDocumentElement().normalize();
-	         System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
-	         NodeList nList = doc.getElementsByTagName("db-connection");
-	         System.out.println("----------------------------");
-	         
-	         for (int temp = 0; temp < nList.getLength(); temp++) {
-	         
-	        	Node nNode = nList.item(temp);
-	            	           
-	            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-	            	
-	               Element element = (Element) nNode;
-	               	               
-	               String dbType = element.getAttribute("db-type");
-	               String dbConnectionNameInFile = element.getAttribute("db-name");
-	               
-	               if(dbConnectionNameInFile.equals(dbConnectionName)) {
+			File inputFile = new File(dbConnectionsFileName);
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(inputFile);
+			doc.getDocumentElement().normalize();
+			
+			NodeList nList = doc.getElementsByTagName("db-connection");
+			
+			for (int temp = 0; temp < nList.getLength(); temp++) {
 
-	            	   DBDefinition dbDefinition = null;
-	            	   
-	            	   //TODO: HANDLE ALL THE DB TYPES HERE
-	            	   
-	            	   if(dbType.equals("MONGODB")) {
-	            		   dbDefinition = getMongoDBDefinition(element);	            	
-		            	   System.out.println("MONGO DB *****  : " + dbDefinition);
-		               }
-	            	   
-	            	  
-	            	   dbConnectionNameToDBDefinitionMap.put(dbConnectionName, dbDefinition);
-	            	   
-	               }
-	            
-	               
-	               //System.out.println("\tport : " + getTagValue("port", eElement));
-	               	               
-	            }	            
-	         }
+				Node nNode = nList.item(temp);
 
-	      } catch (Exception e) {
-	         e.printStackTrace();
-	      }
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+					Element element = (Element) nNode;
+
+					String dbType = element.getAttribute("db-type");
+					String dbConnectionNameInFile = element.getAttribute("db-name");
+
+					if(dbConnectionNameInFile.equals(dbConnectionName)) {
+
+						DBDefinition dbDefinition = null;
+
+						//TODO: HANDLE ALL THE DB TYPES HERE
+
+						if(dbType.equals("MONGODB")) {
+							dbDefinition = getMongoDBDefinition(element);	            				
+						}
+
+						dbConnectionNameToDBDefinitionMap.put(dbConnectionName, dbDefinition);
+
+					}
+
+				}	            
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
-	
+
 	
 
 	private static MongoDBDefinition getMongoDBDefinition(Element element) {

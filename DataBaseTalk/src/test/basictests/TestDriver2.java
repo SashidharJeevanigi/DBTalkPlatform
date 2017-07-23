@@ -1,14 +1,7 @@
 package test.basictests;
 
-import java.net.UnknownHostException;
-import java.util.Date;
-import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
-//import com.mongodb.MongoException;
-import com.mongodb.client.MongoDatabase;
 import java.util.Collection;
 import java.util.Set;
 
